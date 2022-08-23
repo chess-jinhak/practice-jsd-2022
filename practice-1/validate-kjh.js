@@ -1,6 +1,10 @@
 /** JavaScript version */
-document.addEventListener('DOMContentLoaded', initForm);
-const tbody = document.getElementsByTagName('tbody')[0];
+// document.addEventListener('DOMContentLoaded', initForm);
+// const tbody = document.getElementsByTagName('tbody')[0];
+
+/** jQuery version */
+$(document).ready(initForm);
+const $tbody = $(document).find('tbody');
 
 let index = 2;
 
@@ -9,10 +13,16 @@ function initForm() {
    * 삭제 컬럼은 첫 번째 컬럼에서는 보이지 않는 부분 구현
    */
   /** JavaScript version */
-  document.querySelector('#btnSave').addEventListener('click', save);
-  document.getElementsByTagName('button')[0].addEventListener('click', addRow);
-  document.getElementsByTagName('button')[1].style.display = 'none';
-  document.querySelector('#txtName1').focus();
+  // document.querySelector('#btnSave').addEventListener('click', save);
+  // document.getElementsByTagName('button')[0].addEventListener('click', addRow);
+  // document.getElementsByTagName('button')[1].style.display = 'none';
+  // document.querySelector('#txtName1').focus();
+
+  /** jQuery version */
+  $(document).find('#btnSave').click(save);
+  $tbody.find('.btn.btn-primary').click(addRow);
+  $tbody.find('.btn.btn-danger').css('display', 'none');
+  $tbody.find('#txtName1').focus();
 }
 
 function save() {
@@ -33,22 +43,45 @@ function validate() {
    * 또한 저장 실패 시, 해당 에러 난 Input에 Focus 가도록 설정.
    */
   /** JavaScript version */
-  const allFileNames = document.querySelectorAll('input[id^="txtName"]');
-  for (const file of allFileNames) {
-    if (!file.value) {
+  // const allFileNames = document.querySelectorAll('input[id^="txtName"]');
+  // for (const file of allFileNames) {
+  //   if (!file.value) {
+  //     file.focus();
+  //     return false;
+  //   }
+  // }
+  // for (const tr of tbody.children) {
+  //   const orgName = tr.querySelector('input[id^="txtOrganization"]');
+  //   const orgType = tr.querySelector('select');
+
+  //   if (!(!!orgName.value ^ isNaN(orgType.value))) {
+  //     if (!orgName.value) {
+  //       orgName.focus();
+  //     } else {
+  //       orgType.focus();
+  //     }
+  //     return false;
+  //   }
+  // }
+  // return true;
+
+  /** jQuery version */
+  const $allFileNames = $('input[id^="txtName"]');
+  for (const file of $allFileNames) {
+    if (!$(file).val()) {
       file.focus();
       return false;
     }
   }
-  for (const tr of tbody.children) {
-    const orgName = tr.querySelector('input[id^="txtOrganization"]');
-    const orgType = tr.querySelector('select');
+  for (const tr of $tbody.children()) {
+    const $orgName = $(tr).find('input[id^="txtOrganization"]');
+    const $orgType = $(tr).find('select');
 
-    if (!(!!orgName.value ^ isNaN(orgType.value))) {
-      if (!orgName.value) {
-        orgName.focus();
+    if (!(!!$orgName.val() ^ isNaN($orgType.val()))) {
+      if (!$orgName.val()) {
+        $orgName.focus();
       } else {
-        orgType.focus();
+        $orgType.focus();
       }
       return false;
     }
@@ -63,35 +96,59 @@ function addRow() {
    * 추가 버튼 클릭 시 아래에 컬럼 추가. 번호 및 ID는 순차적으로 증가.
    * 추가 컬럼은 총 10번까지 동작하도록 구현.
    */
-  /** JavaScript version */
   if (index > 10) {
     alert('10개 이상 추가 불가');
     return;
   }
-  const TR = tbody.firstElementChild.cloneNode(true);
-  const TH = TR.firstElementChild;
-  TH.innerHTML = index;
-  const newFileName = TR.querySelector('input[id^="txtName"]');
-  newFileName.value = '';
-  newFileName.setAttribute('id', `txtName${index}`);
-  const newOrgName = TR.querySelector('input[id^="txtOrganization"]');
-  newOrgName.value = '';
-  newOrgName.setAttribute('id', `txtOrganization${index}`);
-  const newOrgType = TR.querySelector('select');
-  newOrgType.setAttribute('id', `selOrganizationType${index}`);
-  const newBtnDel = TR.lastElementChild.lastElementChild;
-  const newBtnAdd = TR.lastElementChild.firstElementChild;
-  newBtnDel.addEventListener('click', delRow);
-  newBtnDel.style.display = 'inline-block';
-  if (index <= 9) {
-    newBtnAdd.addEventListener('click', addRow);
-  } else {
-    newBtnAdd.style.display = 'none';
+  /** JavaScript version */
+  // const TR = tbody.firstElementChild.cloneNode(true);
+  // const TH = TR.firstElementChild;
+  // TH.innerHTML = index;
+  // const newFileName = TR.querySelector('input[id^="txtName"]');
+  // newFileName.value = '';
+  // newFileName.setAttribute('id', `txtName${index}`);
+  // const newOrgName = TR.querySelector('input[id^="txtOrganization"]');
+  // newOrgName.value = '';
+  // newOrgName.setAttribute('id', `txtOrganization${index}`);
+  // const newOrgType = TR.querySelector('select');
+  // newOrgType.setAttribute('id', `selOrganizationType${index}`);
+  // const newBtnDel = TR.lastElementChild.lastElementChild;
+  // const newBtnAdd = TR.lastElementChild.firstElementChild;
+  // newBtnDel.addEventListener('click', delRow);
+  // newBtnDel.style.display = 'inline-block';
+  // if (index <= 9) {
+  //   newBtnAdd.addEventListener('click', addRow);
+  // } else {
+  //   newBtnAdd.style.display = 'none';
+  // }
+  // tbody.appendChild(TR);
+
+  // ++index;
+  // newFileName.focus();
+
+  /** jQuery version */
+  const $TR = $(document).find('tbody tr:first-child').clone(true);
+  const $TH = $TR.find('th');
+  $TH.html(index);
+  const $newFileName = $TR.find('input[id^="txtName"]');
+  $newFileName.val('');
+  $newFileName.attr('id', `txtName${index}`);
+  const $newOrgName = $TR.find('input[id^="txtOrganization"]');
+  $newOrgName.val('');
+  $newOrgName.attr('id', `txtOrganization${index}`);
+  const $newOrgType = $TR.find('select');
+  $newOrgType.attr('id', `selOrganizationType${index}`);
+  const $newBtnDel = $TR.find('.btn.btn-danger').first();
+  const $newBtnAdd = $TR.find('.btn.btn-primary').first();
+  $newBtnDel.click(delRow);
+  $newBtnDel.css({ display: 'inline-block' });
+  if (index > 9) {
+    $newBtnAdd.css({ display: 'none' });
   }
-  tbody.appendChild(TR);
+  $tbody.append($TR);
 
   ++index;
-  newFileName.focus();
+  $newFileName.focus();
 }
 
 // 삭제 버튼 클릭 시 동작하는 함수 구현
@@ -102,11 +159,20 @@ function delRow(e) {
    * 단 삭제는 맨 마지막 버튼부터 클릭할 수 있음.
    */
   /** JavaScript version */
-  const clickedIdx = e.target.parentNode.parentNode.firstElementChild.innerHTML;
+  // const clickedIdx = e.target.parentNode.parentNode.firstElementChild.innerHTML;
+  // if (clickedIdx != index - 1) {
+  //   alert('마지막 줄만 삭제할 수 있습니다');
+  //   return;
+  // }
+  // tbody.removeChild(tbody.lastChild);
+  // --index;
+
+  /** jQuery version */
+  const clickedIdx = $(e.target).closest('tr').find('th').html();
   if (clickedIdx != index - 1) {
     alert('마지막 줄만 삭제할 수 있습니다');
     return;
   }
-  tbody.removeChild(tbody.lastChild);
+  $tbody.find('tr:last-child').remove();
   --index;
 }
