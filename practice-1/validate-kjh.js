@@ -1,21 +1,28 @@
-document.addEventListener('DOMContentLoaded', initForm);
-const fileName = document.querySelector('#txtName1');
-const organizationName = document.querySelector('#txtOrganization1');
-const organizationType = document.querySelector('#selOrganizationType1');
-const btnAdd = document.getElementsByTagName('button')[0];
-const btnDelete = document.getElementsByTagName('button')[1];
-const tbody = document.getElementsByTagName('tbody')[0];
+/** JavaScript version */
+// document.addEventListener('DOMContentLoaded', initForm);
+// const tbody = document.getElementsByTagName('tbody')[0];
+
+/** jQuery version */
+$(document).ready(initForm);
+const $tbody = $(document).find('tbody');
 
 let index = 2;
 
 function initForm() {
-  document.querySelector('#btnSave').addEventListener('click', save);
-  btnAdd.addEventListener('click', addRow);
-  btnDelete.disabled = true;
-  fileName.focus();
   /**
    * 삭제 컬럼은 첫 번째 컬럼에서는 보이지 않는 부분 구현
    */
+  /** JavaScript version */
+  // document.querySelector('#btnSave').addEventListener('click', save);
+  // document.getElementsByTagName('button')[0].addEventListener('click', addRow);
+  // document.getElementsByTagName('button')[1].style.display = 'none';
+  // document.querySelector('#txtName1').focus();
+
+  /** jQuery version */
+  $(document).find('#btnSave').click(save);
+  $tbody.find('.btn.btn-primary').click(addRow);
+  $tbody.find('.btn.btn-danger').css('display', 'none');
+  $tbody.find('#txtName1').focus();
 }
 
 function save() {
@@ -35,19 +42,49 @@ function validate() {
    * 추가 된 컬럼(AddRow) 또한 Validate 하도록 만들어야 함.
    * 또한 저장 실패 시, 해당 에러 난 Input에 Focus 가도록 설정.
    */
+  /** JavaScript version */
+  // const allFileNames = document.querySelectorAll('input[id^="txtName"]');
+  // for (const file of allFileNames) {
+  //   if (!file.value) {
+  //     file.focus();
+  //     return false;
+  //   }
+  // }
+  // for (const tr of tbody.children) {
+  //   const orgName = tr.querySelector('input[id^="txtOrganization"]');
+  //   const orgType = tr.querySelector('select');
 
-  if (
-    !fileName.value ||
-    !(!!organizationName.value ^ isNaN(organizationType.value))
-  ) {
-    if (!fileName.value) {
-      fileName.focus();
-    } else if (!organizationName.value) {
-      organizationName.focus();
-    } else {
-      organizationType.focus();
+  //   if (!(!!orgName.value ^ isNaN(orgType.value))) {
+  //     if (!orgName.value) {
+  //       orgName.focus();
+  //     } else {
+  //       orgType.focus();
+  //     }
+  //     return false;
+  //   }
+  // }
+  // return true;
+
+  /** jQuery version */
+  const $allFileNames = $('input[id^="txtName"]');
+  for (const file of $allFileNames) {
+    if (!$(file).val()) {
+      file.focus();
+      return false;
     }
-    return false;
+  }
+  for (const tr of $tbody.children()) {
+    const $orgName = $(tr).find('input[id^="txtOrganization"]');
+    const $orgType = $(tr).find('select');
+
+    if (!(!!$orgName.val() ^ isNaN($orgType.val()))) {
+      if (!$orgName.val()) {
+        $orgName.focus();
+      } else {
+        $orgType.focus();
+      }
+      return false;
+    }
   }
   return true;
 }
@@ -59,87 +96,83 @@ function addRow() {
    * 추가 버튼 클릭 시 아래에 컬럼 추가. 번호 및 ID는 순차적으로 증가.
    * 추가 컬럼은 총 10번까지 동작하도록 구현.
    */
-  if (!validate()) {
-    alert('저장 실패!');
+  if (index > 10) {
+    alert('10개 이상 추가 불가');
     return;
   }
-  const newFileName = document.createElement('DIV');
-  const newOrgName = document.createElement('DIV');
-  const newOrgType = document.createElement('DIV');
-  newFileName.innerHTML = fileName.value;
-  newOrgName.innerHTML = organizationName.value || '-';
-  newOrgType.innerHTML = !isNaN(organizationType.value)
-    ? organizationType[organizationType.value].text
-    : '-';
+  /** JavaScript version */
+  // const TR = tbody.firstElementChild.cloneNode(true);
+  // const TH = TR.firstElementChild;
+  // TH.innerHTML = index;
+  // const newFileName = TR.querySelector('input[id^="txtName"]');
+  // newFileName.value = '';
+  // newFileName.setAttribute('id', `txtName${index}`);
+  // const newOrgName = TR.querySelector('input[id^="txtOrganization"]');
+  // newOrgName.value = '';
+  // newOrgName.setAttribute('id', `txtOrganization${index}`);
+  // const newOrgType = TR.querySelector('select');
+  // newOrgType.setAttribute('id', `selOrganizationType${index}`);
+  // const newBtnDel = TR.lastElementChild.lastElementChild;
+  // const newBtnAdd = TR.lastElementChild.firstElementChild;
+  // newBtnDel.addEventListener('click', delRow);
+  // newBtnDel.style.display = 'inline-block';
+  // if (index <= 9) {
+  //   newBtnAdd.addEventListener('click', addRow);
+  // } else {
+  //   newBtnAdd.style.display = 'none';
+  // }
+  // tbody.appendChild(TR);
 
-  const TR = document.createElement('TR');
-  const TH = document.createElement('TH');
-  TH.innerHTML = index;
-  TH.className = 'align-middle';
-  TH.setAttribute('scope', 'row');
+  // ++index;
+  // newFileName.focus();
 
-  const TD1 = document.createElement('TD');
-  const TD2 = document.createElement('TD');
-  const TD3 = document.createElement('TD');
-  const TD4 = document.createElement('TD');
-  const tdStyle = 'form-control-plaintext align-middle';
-
-  TD1.appendChild(newFileName);
-  newFileName.className = tdStyle + ' text-start px-1';
-  TD2.appendChild(newOrgName);
-  newOrgName.className = tdStyle;
-  TD3.appendChild(newOrgType);
-  newOrgType.className = tdStyle;
-
-  const btnAddClone = btnAdd.cloneNode(true);
-  btnAddClone.disabled = true;
-  const btnDeleteClone = btnDelete.cloneNode(true);
-  btnDeleteClone.addEventListener('click', delRow);
-  btnDeleteClone.disabled = false;
-  /** disable prev btnDeleteClone */
-  if (index > 2) {
-    const lastChild = tbody.lastElementChild;
-    lastChild.lastChild.lastChild.disabled = true;
+  /** jQuery version */
+  const $TR = $(document).find('tbody tr:first-child').clone(true);
+  const $TH = $TR.find('th');
+  $TH.html(index);
+  const $newFileName = $TR.find('input[id^="txtName"]');
+  $newFileName.val('');
+  $newFileName.attr('id', `txtName${index}`);
+  const $newOrgName = $TR.find('input[id^="txtOrganization"]');
+  $newOrgName.val('');
+  $newOrgName.attr('id', `txtOrganization${index}`);
+  const $newOrgType = $TR.find('select');
+  $newOrgType.attr('id', `selOrganizationType${index}`);
+  const $newBtnDel = $TR.find('.btn.btn-danger').first();
+  const $newBtnAdd = $TR.find('.btn.btn-primary').first();
+  $newBtnDel.click(delRow);
+  $newBtnDel.css({ display: 'inline-block' });
+  if (index > 9) {
+    $newBtnAdd.css({ display: 'none' });
   }
+  $tbody.append($TR);
 
-  TD4.appendChild(btnAddClone);
-  TD4.appendChild(btnDeleteClone);
-  TD4.style.display = 'flex';
-  TD4.style.justifyContent = 'space-between';
-
-  TR.appendChild(TH);
-  TR.appendChild(TD1);
-  TR.appendChild(TD2);
-  TR.appendChild(TD3);
-  TR.appendChild(TD4);
-  tbody.appendChild(TR);
-  /** reset values */
-  fileName.value = '';
-  organizationName.value = '';
-  organizationType.value = organizationType[0].text;
-  // console.log(tbody);
-
-  if (index > 10) {
-    btnAdd.disabled = true;
-  }
   ++index;
-  fileName.focus();
+  $newFileName.focus();
 }
 
 // 삭제 버튼 클릭 시 동작하는 함수 구현
-function delRow() {
+function delRow(e) {
   /**
    * 코드 작성.
    * 삭제 버튼 클릭 시 현재 입력된 컬럼 데이터 삭제 및 숨기기
    * 단 삭제는 맨 마지막 버튼부터 클릭할 수 있음.
    */
-  tbody.removeChild(tbody.lastChild);
+  /** JavaScript version */
+  // const clickedIdx = e.target.parentNode.parentNode.firstElementChild.innerHTML;
+  // if (clickedIdx != index - 1) {
+  //   alert('마지막 줄만 삭제할 수 있습니다');
+  //   return;
+  // }
+  // tbody.removeChild(tbody.lastChild);
+  // --index;
+
+  /** jQuery version */
+  const clickedIdx = $(e.target).closest('tr').find('th').html();
+  if (clickedIdx != index - 1) {
+    alert('마지막 줄만 삭제할 수 있습니다');
+    return;
+  }
+  $tbody.find('tr:last-child').remove();
   --index;
-  if (index > 2) {
-    tbody.lastChild.lastChild.lastChild.disabled = false;
-  }
-  if (index === 10) {
-    btnAdd.disabled = false;
-  }
-  fileName.focus();
 }
