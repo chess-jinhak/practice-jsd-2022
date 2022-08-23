@@ -1,7 +1,16 @@
-document.addEventListener('DOMContentLoaded', initForm);
+document.addEventListener("DOMContentLoaded", initForm);
+/*
+txtName1 자료명
+txtOrganization1 기관명
+selOrganizationType1 기관종류
+*/
+// const txtName = document.querySelector("#txtName");
+// const txtOrganization = document.querySelector("#txtOrganization");
+// const selOrganizationType = document.querySelector("#selOrganizationType");
+// let addTable = document.getElementById("active-table");
 
 function initForm() {
-  document.querySelector('#btnSave').addEventListener('click', save);
+  document.querySelector("#btnSave").addEventListener("click", save);
 
   /**
    * 삭제 컬럼은 첫 번째 컬럼에서는 보이지 않는 부분 구현
@@ -9,12 +18,12 @@ function initForm() {
 }
 
 function save() {
-  if(!validate()) {
-    alert('저장 실패!');
+  if (!validate()) {
+    alert("저장 실패!");
     return;
-  } 
+  }
 
-  alert('저장 성공!');
+  alert("저장 성공!");
 }
 
 // 성공 시 true 반환
@@ -36,6 +45,57 @@ function addRow() {
    * 추가 버튼 클릭 시 아래에 컬럼 추가. 번호 및 ID는 순차적으로 증가.
    * 추가 컬럼은 총 10번까지 동작하도록 구현.
    */
+  let addTable = document.getElementById("active-table");
+  console.log("addTable::::", addTable);
+
+  //테이블 마지막에 row 추가하기 위한 작업
+  let lastRow = addTable.rows.length;
+  let ieration = lastRow;
+  let row = addTable.insertRow(lastRow);
+  console.log("lastRow:::::", lastRow);
+  // console.log("row:::::", row);
+  // 번호(text);
+  let count = row.insertCell(0);
+  // console.log("count::::", count);
+  let textCount = document.createTextNode(ieration);
+  // count.appendChild(textCount);
+  count.append(textCount);
+
+  //자료명(inputbox)
+  let txtName = row.insertCell(1);
+  let txtNameCopy = document.querySelector("#txtName");
+  // console.log("txtNameCopy::::", txtNameCopy);
+  let txtNameResult = txtNameCopy.cloneNode(true);
+  // txtName.appendChild(txtNameResult);
+  txtName.append(txtNameResult);
+
+  //기관명(inputbox)
+  let txtOrganization = row.insertCell(2);
+  let txtOrganizationCopy = document.querySelector("#txtOrganization");
+  // console.log("txtOrganizationCopy::::", txtOrganizationCopy);
+  let txtOrganizationResult = txtOrganizationCopy.cloneNode(true);
+  // txtOrganization.appendChild(txtOrganizationResult);
+  txtOrganization.append(txtOrganizationResult);
+
+  //기관종류(selectBox))
+  let selOrganizationType = row.insertCell(3);
+  let selOrganizationTypeCopy = document.querySelector("#selOrganizationType");
+  // console.log("selOrganizationTypeCopy::::", selOrganizationTypeCopy);
+  let selOrganizationTypeResult = selOrganizationTypeCopy.cloneNode(true);
+  // selOrganizationType.appendChild(selOrganizationTypeResult);
+  selOrganizationType.append(selOrganizationTypeResult);
+
+  //추가/삭제(button)
+  let addRow = row.insertCell(4);
+  let addRowCopy = document.querySelector("#addRow");
+  // console.log("addRowCopy::::", addRowCopy);
+  let addRowResult = addRowCopy.cloneNode(true);
+  // addRow.appendChild(addRowResult);
+  let delRowCopy = document.querySelector("#delRow");
+  // console.log("delRowCopy::::", delRowCopy);
+  let delRowResult = delRowCopy.cloneNode(true);
+  // addRow.appendChild(addRowResult, delRowResult);
+  addRow.append(addRowResult, delRowResult);
 }
 
 // 삭제 버튼 클릭 시 동작하는 함수 구현
@@ -45,4 +105,7 @@ function delRow() {
    * 삭제 버튼 클릭 시 현재 입력된 컬럼 데이터 삭제 및 숨기기
    * 단 삭제는 맨 마지막 버튼부터 클릭할 수 있음.
    */
+  console.log("delRowastRow::::", lastRow);
+  let delTable = document.getElementById("active-table");
+  delTable.deleteRow(-1);
 }
