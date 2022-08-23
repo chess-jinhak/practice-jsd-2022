@@ -4,13 +4,16 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/framework/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      href="../framework/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <title>Practice</title>
   </head>
   <body>
     <div class="container mt-5 text-center">
       <h3 class="mb-5">활동 증빙자료 목록표</h3>
-      <table class="table table-striped">
+      <table class="table table-striped" id="active-table">
         <colgroup>
           <col width="15%" />
           <col width="40%" />
@@ -29,12 +32,12 @@
         </thead>
         <tbody>
           <tr>
-            <th scope="row" class="align-middle">1</th>
+            <th scope="row" class="align-middle" id="countResult">1</th>
             <td>
               <input
                 type="text"
                 class="form-control"
-                id="txtName1"
+                id="txtName"
                 placeholder="자료명"
               />
             </td>
@@ -42,12 +45,16 @@
               <input
                 type="text"
                 class="form-control"
-                id="txtOrganization1"
+                id="txtOrganization"
                 placeholder="기관명"
               />
             </td>
             <td>
-              <select class="form-select" aria-label="Default select example" id="selOrganizationType1">
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                id="selOrganizationType"
+              >
                 <option selected>선택해주세요</option>
                 <option value="1">학교</option>
                 <option value="2">연구기관</option>
@@ -55,19 +62,35 @@
               </select>
             </td>
             <td>
-              <button type="button" class="btn btn-primary">추가</button>
-              <button type="button" class="btn btn-danger">삭제</button>
+              <button
+                id="addRow"
+                onclick="addRow()"
+                type="button"
+                class="btn btn-primary"
+              >
+                추가
+              </button>
+              <button
+                id="delRow"
+                onclick="delRow()"
+                type="button"
+                class="btn btn-danger"
+              >
+                삭제
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
 
       <div class="text-center mt-5">
-        <button id="btnSave" type="button" class="btn btn-dark">저장하기</button>
+        <button id="btnSave" type="button" class="btn btn-dark">
+          저장하기
+        </button>
       </div>
     </div>
 
-    <script src="/framework/bootstrap/js/bootstrap.min.js"></script>
-    <script src="./validate.js"></script>
+    <script src="../framework/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./validate-phj.js"></script>
   </body>
 </html>
