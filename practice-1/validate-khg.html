@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/framework/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <title>Practice</title>
+  </head>
+  <body>
+    <div class="container mt-5 text-center">
+      <h3 class="mb-5">활동 증빙자료 목록표</h3>
+      <table class="table table-striped">
+        <colgroup>
+          <col width="15%" />
+          <col width="40%" />
+          <col width="15%" />
+          <col width="15%" />
+          <col width="15%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col">번호</th>
+            <th scope="col">자료명</th>
+            <th scope="col">기관명</th>
+            <th scope="col">기관종류</th>
+            <th scope="col">추가/삭제</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="align-middle">1</th>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                id="txtName1"
+                placeholder="자료명"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                id="txtOrganization1"
+                placeholder="기관명"
+              />
+            </td>
+            <td>
+              <select class="form-select" aria-label="Default select example" id="selOrganizationType1">
+                <option selected>선택해주세요</option>
+                <option value="1">학교</option>
+                <option value="2">연구기관</option>
+                <option value="3">기타단체</option>
+              </select>
+            </td>
+            <td>
+              <button type="button" class="btn btn-primary">추가</button>
+              <button type="button" class="btn btn-danger">삭제</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="text-center mt-5">
+        <button id="btnSave" type="button" class="btn btn-dark">저장하기</button>
+      </div>
+    </div>
+
+    <script src="/framework/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./validate-khg.js"></script>
+  </body>
+</html>
